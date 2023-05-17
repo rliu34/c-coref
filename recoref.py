@@ -137,9 +137,9 @@ def close_cc(tree, word1, word2):
 
 
 
-def condA(tree, word1, word2): 
-    """Checks Condition A: An R-expression(proper noun or named object) cannot be bound by something which c-commands it. Return False if the condition is violated."""
-    # print("condA")
+def condC(tree, word1, word2): 
+    """Checks Condition C: An R-expression(proper noun or named object) cannot be bound by something which c-commands it. Return False if the condition is violated."""
+    # print("condC")
     # if word1 is a pronoun but not word2 
     if (is_pronoun(tree, word1) and not is_pronoun(tree, word2)):  
         # print("word1 is a pronoun but not word2")
@@ -169,9 +169,9 @@ def condB(tree, word1, word2):
 
     return True
 
-def condC(tree, word1, word2):
-    """Condition C: Anaphors (reflexive pronouns) must be closely c-commanded. Return -1 if the condition is violated, 0 if irrelevant, 1 if condition is met."""
-    # print("condC")
+def condA(tree, word1, word2):
+    """Condition A: Anaphors (reflexive pronouns) must be closely c-commanded. Return -1 if the condition is violated, 0 if irrelevant, 1 if condition is met."""
+    # print("condA")
     if is_reflexive(tree, word1): 
         # word1 must c-command word2
         if close_cc(tree, word2, word1):
@@ -226,9 +226,9 @@ def rescore(nc_scores, txt):
                     # print("word2: " + word2)
                     if word2 in sent and (word1 != word2): 
                         # if any condition is violated 
-                        if not (condA(tree, word1, word2) and condB(tree, word1, word2)):
+                        if not (condC(tree, word1, word2) and condB(tree, word1, word2)):
                             clean_scores[word1_tok][word2_tok] = -1000
-                        if condC(tree, word1, word2) == 1: 
+                        if condA(tree, word1, word2) == 1: 
                             clean_scores[word1_tok][word2_tok] = 1000
 
     return clean_scores
